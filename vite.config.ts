@@ -5,6 +5,27 @@ import { createServer } from "./server";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode }) => ({
+  base: mode === "production" ? "/EarningsIQ/" : "/",
+  server: {
+    host: "::",
+    port: 8080,
+    fs: {
+      allow: ["./client", "./shared", "index.html"],
+      deny: [".env", ".env.*", "*.{crt,pem}", "**/.git/**", "server/**"],
+    },
+  },
+  build: {
+    outDir: "dist/spa",
+  },
+  plugins: [react(), expressPlugin()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./client"),
+      "@shared": path.resolve(__dirname, "./shared"),
+    },
+  },
+}));
   server: {
     host: "::",
     port: 8080,
